@@ -26,8 +26,9 @@ var currentLocation = {
 /**
  * Switch channels name in the right app bar
  * @param channelObject
+ * @param channelElement
  */
-function switchChannel(channelObject) {
+function switchChannel(channelObject, channelElement) {
     // Log the channel switch
     console.log("Tuning in to channel", channelObject);
 
@@ -52,10 +53,12 @@ function switchChannel(channelObject) {
     /* highlight the selected #channel.
        This is inefficient (jQuery has to search all channel list items), but we'll change it later on */
     $('#channels li').removeClass('selected');
-    $('#channels li:contains(' + channelObject.name + ')').addClass('selected');
+    channelElement.addClass('selected');
 
     /* store selected channel in global variable */
     currentChannel = channelObject;
+
+    showMessages();
 }
 
 /* liking a channel on #click */
@@ -225,6 +228,8 @@ function listChannels(criterion) {
     for (i = 0; i < channels.length; i++) {
         $('#channels ul').append(createChannelElement(channels[i]));
     };
+
+    $('#channels li:contains(' + currentChannel.name + ')').addClass('selected');
 }
 
 /**
@@ -325,6 +330,10 @@ function createChannelElement(channelObject) {
     // The chevron
     $('<i>').addClass('fas').addClass('fa-chevron-right').appendTo(meta);
 
+    channel.click(function() {
+        switchChannel(channelObject, $(this));
+    });
+
     // return the complete channel
     return channel;
 }
@@ -354,4 +363,19 @@ function abortCreationMode() {
     $('#app-bar-create').removeClass('show');
     $('#button-create').hide();
     $('#button-send').show();
+}
+
+function showMessages() {
+    /*var text = currentChannel.messages.val();*/
+    /*$('#messages').remove($('<div>'));*/
+    var text = $('<div>').text(currentChannel.messages);
+    text.each(function () {
+        var text = currentChannel.messages;
+        if (text.length != 0) {
+            var message = new Message(text);
+            console.log("New message:", message);
+            $('#messages').append(createMessageElement(message));
+            $('#messages').scrollTop($('#messages').prop('scrollHeight'));
+        }
+    });
 }
