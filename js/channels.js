@@ -6,7 +6,7 @@ var yummy = {
     starred: false,
     expiresIn: 100,
     messageCount: 999,
-    messages : ['kkkk']           // #10 #message s property in #chl object
+    messages : ['This is a chat message']           // #10 #message s property in #chl object
 };
 
 var sevencontinents = {

@@ -1,5 +1,9 @@
 /* start the external action and say hello */
-console.log("App is alive");
+$( document ).ready(function() {
+    listChannels(compareNew);
+    loadEmojis();
+    console.log( "App is initialized" );
+});
 
 /** #10 global #array of channels #arr*/
 var channels = [
@@ -147,7 +151,13 @@ function sendMessage() {
     console.log("New message:", message);
 
     // #10 #push the new #message to the current channel's messages array
-    currentChannel.messages.push(message);
+    //currentChannel.messages.push(message);
+    $.each(channels, function(index, value){
+        if (currentChannel.name == value.name)
+        {
+            value.messages.push(message.text);
+        }
+    })
 
     // #10 #increase the messageCount of the current channel
     currentChannel.messageCount+=1;
@@ -366,16 +376,10 @@ function abortCreationMode() {
 }
 
 function showMessages() {
-    /*var text = currentChannel.messages.val();*/
-    /*$('#messages').remove($('<div>'));*/
-    var text = $('<div>').text(currentChannel.messages);
-    text.each(function () {
-        var text = currentChannel.messages;
-        if (text.length != 0) {
-            var message = new Message(text);
-            console.log("New message:", message);
-            $('#messages').append(createMessageElement(message));
-            $('#messages').scrollTop($('#messages').prop('scrollHeight'));
-        }
-    });
+    $('#messages').empty();
+    var channelMessages = currentChannel.messages;
+    $.each(channelMessages, function (index, value) {
+        var message = new Message(value);
+        $('#messages').append(createMessageElement(message));
+    })
 }
