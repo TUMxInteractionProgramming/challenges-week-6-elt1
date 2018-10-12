@@ -1,9 +1,5 @@
 /* start the external action and say hello */
-$( document ).ready(function() {
-    listChannels(compareNew);
-    loadEmojis();
-    console.log( "App is initialized" );
-});
+console.log("App is alive");
 
 /** #10 global #array of channels #arr*/
 var channels = [
